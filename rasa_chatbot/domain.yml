@@ -1,0 +1,68 @@
+version: "2.0"
+
+slots:
+  restaurant_food:
+    type: text
+  restaurant_area:
+    type: text
+  restaurant_pricerange:
+    type: text
+  restaurant_name:
+    type: text
+  restaurant_bookpeople:
+    type: text
+  restaurant_bookday:
+    type: text
+  restaurant_booktime:
+    type: text
+
+intents:
+  - greet
+  - goodbye
+  - affirm
+  - deny
+  - find_res_pricerange_area_food
+  - find_res_pricerange_area
+  - find_res_pricerange_food
+  - find_res_area_food
+  - find_res_foodfind_res_area
+  - find_res_pricerange
+  - find_res
+  - book_res_booktime_bookday_bookpeople_name
+  - book_res_booktime_bookday_bookpeople
+  - book_res_booktime_bookday_name
+  - book_res_booktime_bookpeople_name
+  - book_res_booktime_bookday
+  - book_res_booktime_bookpeople
+  - book_res_bookday_bookpeople
+  - book_res_booktime_name
+  - book_res_bookday_name
+  - book_res_bookpeople_name
+  - book_res_name
+  - book_res_bookpeople
+  - book_res_bookday
+  - book_res_booktime
+  - book_res
+
+responses:
+  utter_greet:
+  - text: "Hey!"
+  - text: "Hi!"
+  - text: "Hello!"
+  
+  utter_offer_help:
+  - text: "How may I assist you?"
+  
+  utter_please_rephrase:
+  - text: "Sorry, I didn’t quite get that."
+  - text: "Sorry, I didn't get that. Can you rephrase?"
+
+  utter_goodbye:
+  - text: "Bye"
+  - text: "Goodbye"
+  - text: "You're welcome. Goodbye"
+  - text: "Thank you for using our service. Goodbye!"
+
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: true

@@ -1,0 +1,143 @@
+version: "2.0"
+
+nlu:
+- intent: greet
+  examples: |
+    - hey
+    - hello
+    - hi
+    - hello there
+    - good morning
+    - good evening
+    - moin
+    - hey there
+    - let's go
+    - hey dude
+    - goodmorning
+    - goodevening
+    - good afternoon
+
+- intent: goodbye
+  examples: |
+    - good afternoon
+    - cu
+    - good by
+    - cee you later
+    - good night
+    - bye
+    - goodbye
+    - have a nice day
+    - see you around
+    - bye bye
+    - see you later
+
+- intent: affirm
+  examples: |
+    - yes
+    - y
+    - indeed
+    - of course
+    - that sounds good
+    - correct
+
+- intent: deny
+  examples: |
+    - no
+    - n
+    - never
+    - I don't think so
+    - don't like that
+    - no way
+    - not really
+
+- intent: find_res_pricerange_area_food
+  examples: |
+    - I'm looking for a [expensive](restaurant_pricerange) place to dine in the [centre](restaurant_area) that serves [chinese](restaurant_food) food.
+
+- intent: find_res_pricerange_area
+  examples: |
+    - I'm looking for a [expensive](restaurant_pricerange) place to dine in the [centre](restaurant_area).
+
+- intent: find_res_pricerange_food
+  examples: |
+    - I'm looking for a [expensive](restaurant_pricerange) place to dine that serves [chinese](restaurant_food) food.
+
+- intent: find_res_area_food
+  examples: |
+    - I'm looking for a place to dine in the [centre](restaurant_area) that serves [chinese](restaurant_food) food.
+
+- intent: find_res_food
+  examples: |
+    - I'm looking for a place to dine that serves [chinese](restaurant_food) food.
+
+- intent: find_res_area
+  examples: |
+    - I'm looking for a place to dine in the [centre](restaurant_area).
+
+- intent: find_res_pricerange
+  examples: |
+    - I'm looking for a [expensive](restaurant_pricerange) place to dine.
+
+- intent: find_res
+  examples: |
+    - I'm looking for a place to dine.
+
+- intent: book_res_booktime_bookday_bookpeople_name
+  examples: |
+    -  I would like to book a table at [Galleria](restaurant_name) for [6](restaurant_bookpeople) people at [19:15](restaurant_booktime) on [Monday](restaurant_bookday) please.
+
+- intent: book_res_booktime_bookday_bookpeople
+  examples: |
+    -  I would like to book a table for [6](restaurant_bookpeople) people at [19:15](restaurant_booktime) on [Monday](restaurant_bookday) please.
+
+- intent: book_res_booktime_bookday_name
+  examples: |
+    -  I would like to book a table at [Galleria](restaurant_name) at [19:15](restaurant_booktime) on [Monday](restaurant_bookday) please.
+
+- intent: book_res_booktime_bookpeople_name
+  examples: |
+    -  I would like to book a table at [Galleria](restaurant_name) for [6](restaurant_bookpeople) people at [19:15](restaurant_booktime) please.
+
+- intent: book_res_booktime_bookday
+  examples: |
+    -  I would like to book a table at [19:15](restaurant_booktime) on [Monday](restaurant_bookday) please.
+
+- intent: book_res_booktime_bookpeople
+  examples: |
+    -  I would like to book a table for [6](restaurant_bookpeople) people at [19:15](restaurant_booktime) please.
+
+- intent: book_res_bookday_bookpeople
+  examples: |
+    -  I would like to book a table for [6](restaurant_bookpeople) people on [Monday](restaurant_bookday) please.
+
+- intent: book_res_booktime_name
+  examples: |
+    -  I would like to book a table at [Galleria](restaurant_name) at [19:15](restaurant_booktime) please.
+
+- intent: book_res_bookday_name
+  examples: |
+    -  I would like to book a table at [Galleria](restaurant_name) people on [Monday](restaurant_bookday) please.
+
+- intent: book_res_bookpeople_name
+  examples: |
+    -  I would like to book a table at [Galleria](restaurant_name) for [6](restaurant_bookpeople) people please.
+
+- intent: book_res_name
+  examples: |
+    -  I would like to book a table at [Galleria](restaurant_name) please.
+
+- intent: book_res_bookpeople
+  examples: |
+    -  I would like to book a table for [6](restaurant_bookpeople) people please.
+
+- intent: book_res_bookday
+  examples: |
+    -  I would like to book a table on [Monday](restaurant_bookday) please.
+
+- intent: book_res_booktime
+  examples: |
+    -  I would like to book a table at [19:15](restaurant_booktime) please.
+
+- intent: book_res
+  examples: |
+    -  I would like to book a table please.
