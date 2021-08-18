@@ -1,5 +1,40 @@
 version: "2.0"
 
+forms:
+  find_res_form:
+    required_slots:
+      restaurant_food:
+      - type: from_entity
+        entity: restaurant_food
+        intent: find_res
+      restaurant_area:
+      - type: from_entity
+        entity: restaurant_area
+        intent: find_res
+      restaurant_pricerange:
+      - type: from_entity
+        entity: restaurant_pricerange
+        intent: find_res
+
+  book_res_form:
+    required_slots:
+      restaurant_name:
+      - type: from_entity
+        entity: restaurant_name
+        intent: book_res
+      restaurant_bookpeople:
+      - type: from_entity
+        entity: restaurant_bookpeople
+        intent: book_res
+      restaurant_bookday:
+      - type: from_entity
+        entity: restaurant_bookday
+        intent: book_res
+      restaurant_booktime:
+      - type: from_entity
+        entity: restaurant_booktime
+        intent: book_res
+
 slots:
   restaurant_food:
     type: text
@@ -16,32 +51,21 @@ slots:
   restaurant_booktime:
     type: text
 
+entities:
+  - restaurant_food
+  - restaurant_area
+  - restaurant_pricerange
+  - restaurant_name
+  - restaurant_bookpeople
+  - restaurant_bookday
+  - restaurant_booktime
+
 intents:
   - greet
   - goodbye
   - affirm
   - deny
-  - find_res_pricerange_area_food
-  - find_res_pricerange_area
-  - find_res_pricerange_food
-  - find_res_area_food
-  - find_res_foodfind_res_area
-  - find_res_pricerange
   - find_res
-  - book_res_booktime_bookday_bookpeople_name
-  - book_res_booktime_bookday_bookpeople
-  - book_res_booktime_bookday_name
-  - book_res_booktime_bookpeople_name
-  - book_res_booktime_bookday
-  - book_res_booktime_bookpeople
-  - book_res_bookday_bookpeople
-  - book_res_booktime_name
-  - book_res_bookday_name
-  - book_res_bookpeople_name
-  - book_res_name
-  - book_res_bookpeople
-  - book_res_bookday
-  - book_res_booktime
   - book_res
 
 responses:
@@ -57,11 +81,21 @@ responses:
   - text: "Sorry, I didn’t quite get that."
   - text: "Sorry, I didn't get that. Can you rephrase?"
 
+  utter_ask_pref_food:
+  - text: "Do you have any preference of food type?"
+
   utter_goodbye:
   - text: "Bye"
   - text: "Goodbye"
   - text: "You're welcome. Goodbye"
   - text: "Thank you for using our service. Goodbye!"
+
+  utter_looking_4_res:
+  - text: "Searching for {restaurant_pricerange} {restaurant_food} restaurants in the {restaurant_area}"
+
+  utter_offer_book:
+  - text: "Would you like to book a table?"
+
 
 session_config:
   session_expiration_time: 60
