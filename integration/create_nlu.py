@@ -195,12 +195,14 @@ def splitWithIndices(s, c=' '):
     yield p, q
    p = q
 
-possibleIntents = {"find_res_pricerange_area_food": [], "find_res_pricerange_area": [], "find_res_pricerange_food": [], 
-"find_res_area_food": [], "find_res_area": [], "find_res_pricerange": [], "find_res_food": [], "find_res":[],
-"book_res_booktime_bookday_bookpeople_name":[], "book_res_booktime_bookday_bookpeople":[], "book_res_booktime_bookday_name":[], 
-"book_res_booktime_bookpeople_name":[],"book_res_bookday_bookpeople_name":[],"book_res_booktime_bookday":[],"book_res_booktime_bookpeople":[],
-"book_res_bookday_bookpeople":[], "book_res_booktime_name":[], "book_res_bookday_name":[], "book_res_bookpeople_name":[],
-"book_res_name": [], "book_res_bookpeople": [], "book_res_bookday": [], "book_res_booktime": [], "book_res": []}
+# possibleIntents = {"find_res_pricerange_area_food": [], "find_res_pricerange_area": [], "find_res_pricerange_food": [], 
+# "find_res_area_food": [], "find_res_area": [], "find_res_pricerange": [], "find_res_food": [], "find_res":[],
+# "book_res_booktime_bookday_bookpeople_name":[], "book_res_booktime_bookday_bookpeople":[], "book_res_booktime_bookday_name":[], 
+# "book_res_booktime_bookpeople_name":[],"book_res_bookday_bookpeople_name":[],"book_res_booktime_bookday":[],"book_res_booktime_bookpeople":[],
+# "book_res_bookday_bookpeople":[], "book_res_booktime_name":[], "book_res_bookday_name":[], "book_res_bookpeople_name":[],
+# "book_res_name": [], "book_res_bookpeople": [], "book_res_bookday": [], "book_res_booktime": [], "book_res": []}
+
+possibleIntents = {"find_restaurant": [], "book_restaurant": []}
 
 def getCurrIntent(slot_values, active_intent):
   slot_values = slot_values.values()
@@ -291,13 +293,19 @@ def filter(data):
                         onlyOther = True
 
                         # ver o tipo de frase que estamos lidando
-                        currIntent = getCurrIntent(dic, the_active_intent)
+                        currIntent = the_active_intent
 
                         # tirar pontuação
                         noPontuationText = ""
+                        lastLetter = None
                         for letter in utterance.strip():
                             if not _is_punctuation(letter) or letter==':' or letter=='/': 
-                                noPontuationText += letter
+                                if letter != ' ' or lastLetter != ' ':
+                                  noPontuationText += letter
+                                  lastLetter = letter
+                            elif lastLetter != ' ':
+                                noPontuationText += ' '
+                                lastLetter = ' '
 
                         # tentar achar labels na frase original (sem pontuação)
                         gotItems = []
