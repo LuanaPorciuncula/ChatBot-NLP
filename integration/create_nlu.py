@@ -202,7 +202,7 @@ def splitWithIndices(s, c=' '):
 # "book_res_bookday_bookpeople":[], "book_res_booktime_name":[], "book_res_bookday_name":[], "book_res_bookpeople_name":[],
 # "book_res_name": [], "book_res_bookpeople": [], "book_res_bookday": [], "book_res_booktime": [], "book_res": []}
 
-possibleIntents = {"find_restaurant": [], "book_restaurant": []}
+possibleIntents = {"find_res": [], "book_res": []}
 
 def getCurrIntent(slot_values, active_intent):
   slot_values = slot_values.values()
@@ -283,7 +283,7 @@ def filter(data):
                               if slot_values and len(slot_values) != 0:
                                   for key, value in slot_values.items():
                                       for elem in value:
-                                        dic[elem] = key
+                                        dic[elem] = key.replace('-', '_')
 
                                   the_active_intent = active_intent
 
@@ -293,7 +293,7 @@ def filter(data):
                         onlyOther = True
 
                         # ver o tipo de frase que estamos lidando
-                        currIntent = the_active_intent
+                        currIntent = the_active_intent.replace("restaurant", "res")
 
                         # tirar pontuação
                         noPontuationText = ""
@@ -354,7 +354,7 @@ def filter(data):
                         
                         # if the_active_intent == "book_restaurant" : print(noPontuationText)
                           
-                        if not onlyOther and len(dic) == 0: possibleIntents[currIntent].append(noPontuationText)
+                        if not onlyOther and len(dic) == 0: possibleIntents[currIntent].append(noPontuationText.strip())
 
 filter(myJsonTrain1)
 filter(myJsonTrain2)
@@ -380,8 +380,8 @@ f = open("nlu.yml", "w")
 f.write("nlu:\n")
 for pInt, lista in possibleIntents.items():
   f.write(f'- intent: {pInt}\n')
-  f.write(" examples: |\n")
-  f.writelines([f'  - {phrase}\n' for phrase in lista])
+  f.write("  examples: |\n")
+  f.writelines([f'    - {phrase}\n' for phrase in lista])
   f.write('\n')
 
 f.close()
