@@ -7,4 +7,3 @@ stories:
   - intent: greet
   - action: utter_greet
   - action: utter_offer_help
-  - intent: find_res # FILTER WITH 3 VAR
