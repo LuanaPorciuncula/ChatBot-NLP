@@ -1583,7 +1583,6 @@ nlu:
     - Can you help me find an [expensive]{"entity": "restaurant_pricerange", "value": "expensive"} restaurant in the town [centre](restaurant_area)
     - I would like a [Hungarian](restaurant_food) restaurant in the [west](restaurant_area) of town
     - Is there any [Indian](restaurant_food) food on the [west](restaurant_area) side of town
-    - Where is the [[Adden](restaurant_name)brookes](restaurant_name) Hospital located
     - Ok can you send me the address and area of Aylesbray lodge I am also looking for a restaurant called [royal spice](restaurant_name)
     - I m looking for an [expensive]{"entity": "restaurant_pricerange", "value": "expensive"} restaurant in the [south](restaurant_area)
     - Yes I would like a restaurant that is also in the [south](restaurant_area)
@@ -3664,7 +3663,7 @@ nlu:
     - I need to reserve a table at [shiraz](restaurant_name) can you help me
     - Hi I m looking for a restaurant with [modern european](restaurant_food) food It should be in the [moderate]{"entity": "restaurant_pricerange", "value": "moderate"} price range
     - I m looking for info on [expensive]{"entity": "restaurant_pricerange", "value": "expensive"} [south indian](restaurant_food) restaurants in Cambridge
-    - Are there any [[steakhouse](restaurant_food)s](restaurant_food) in the [centre](restaurant_area)
+    - Are there any [steakhouse](restaurant_food)s in the [centre](restaurant_area)
     - Thank you I am also looking for information about the [Golden Wok](restaurant_name) restaurant
     - Hello Can you suggest a [french](restaurant_food) restaurant in the [north](restaurant_area) end
     - I am looking for an [expensive]{"entity": "restaurant_pricerange", "value": "expensive"} place to dine which serves [indian](restaurant_food) food

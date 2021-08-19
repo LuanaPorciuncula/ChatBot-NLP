@@ -295,6 +295,10 @@ def filter(data):
                         # ver o tipo de frase que estamos lidando
                         currIntent = the_active_intent.replace("restaurant", "res")
 
+                        # bad dataset
+                        if "steakhouses" in dic.keys() and "steakhouse" in dic.keys() : dic.pop("steakhouses")
+                        if utterance == "Where is the Addenbrookes Hospital located?" : continue
+
                         # tirar pontuação
                         noPontuationText = ""
                         lastLetter = None
