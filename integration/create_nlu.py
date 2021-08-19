@@ -195,12 +195,14 @@ def splitWithIndices(s, c=' '):
     yield p, q
    p = q
 
-possibleIntents = {"find_res_pricerange_area_food": [], "find_res_pricerange_area": [], "find_res_pricerange_food": [], 
-"find_res_area_food": [], "find_res_area": [], "find_res_pricerange": [], "find_res_food": [], "find_res":[],
-"book_res_booktime_bookday_bookpeople_name":[], "book_res_booktime_bookday_bookpeople":[], "book_res_booktime_bookday_name":[], 
-"book_res_booktime_bookpeople_name":[],"book_res_bookday_bookpeople_name":[],"book_res_booktime_bookday":[],"book_res_booktime_bookpeople":[],
-"book_res_bookday_bookpeople":[], "book_res_booktime_name":[], "book_res_bookday_name":[], "book_res_bookpeople_name":[],
-"book_res_name": [], "book_res_bookpeople": [], "book_res_bookday": [], "book_res_booktime": [], "book_res": []}
+# possibleIntents = {"find_res_pricerange_area_food": [], "find_res_pricerange_area": [], "find_res_pricerange_food": [], 
+# "find_res_area_food": [], "find_res_area": [], "find_res_pricerange": [], "find_res_food": [], "find_res":[],
+# "book_res_booktime_bookday_bookpeople_name":[], "book_res_booktime_bookday_bookpeople":[], "book_res_booktime_bookday_name":[], 
+# "book_res_booktime_bookpeople_name":[],"book_res_bookday_bookpeople_name":[],"book_res_booktime_bookday":[],"book_res_booktime_bookpeople":[],
+# "book_res_bookday_bookpeople":[], "book_res_booktime_name":[], "book_res_bookday_name":[], "book_res_bookpeople_name":[],
+# "book_res_name": [], "book_res_bookpeople": [], "book_res_bookday": [], "book_res_booktime": [], "book_res": []}
+
+possibleIntents = {"find_res": [], "book_res": []}
 
 def getCurrIntent(slot_values, active_intent):
   slot_values = slot_values.values()
@@ -281,7 +283,7 @@ def filter(data):
                               if slot_values and len(slot_values) != 0:
                                   for key, value in slot_values.items():
                                       for elem in value:
-                                        dic[elem] = key
+                                        dic[elem] = key.replace('-', '_')
 
                                   the_active_intent = active_intent
 
@@ -291,21 +293,41 @@ def filter(data):
                         onlyOther = True
 
                         # ver o tipo de frase que estamos lidando
-                        currIntent = getCurrIntent(dic, the_active_intent)
+                        currIntent = the_active_intent.replace("restaurant", "res")
 
                         # tirar pontuação
                         noPontuationText = ""
+                        lastLetter = None
                         for letter in utterance.strip():
                             if not _is_punctuation(letter) or letter==':' or letter=='/': 
-                                noPontuationText += letter
+                                if letter != ' ' or lastLetter != ' ':
+                                  noPontuationText += letter
+                                  lastLetter = letter
+                            elif lastLetter != ' ':
+                                noPontuationText += ' '
+                                lastLetter = ' '
 
                         # tentar achar labels na frase original (sem pontuação)
                         gotItems = []
                         for word, slot_values in dic.items():
                             if word in noPontuationText:
-                                for match in re.finditer(re.escape(word), noPontuationText):
-                                    noPontuationText = noPontuationText[:match.start()] + '[' + noPontuationText[match.start():match.end()] + ']' + f'({slot_values})' + noPontuationText[match.end():]
-                                    break
+                                if slot_values == "restaurant_pricerange":
+                                  for match in re.finditer(re.escape(word), noPontuationText):
+                                      end = match.end()
+                                      for index, letter in enumerate(noPontuationText):
+                                        if index < end: continue
+
+                                        if letter == ' ' : 
+                                          end = index
+                                          break
+
+                                      noPontuationText = noPontuationText[:match.start()] + '[' + noPontuationText[match.start():end] + ']' + '{"entity": "' + slot_values + '", "value": "' + noPontuationText[match.start():match.end()] + '"}' + noPontuationText[end:]
+                                      break
+
+                                else :
+                                  for match in re.finditer(re.escape(word), noPontuationText):
+                                      noPontuationText = noPontuationText[:match.start()] + '[' + noPontuationText[match.start():match.end()] + ']' + f'({slot_values})' + noPontuationText[match.end():]
+                                      break
 
                                 gotItems.append(word)
 
@@ -317,9 +339,23 @@ def filter(data):
                         gotItems = []
                         for word, slot_values in dic.items():
                             if word in noPontuationText.lower():
-                                for match in re.finditer(re.escape(word), noPontuationText.lower()):
-                                    noPontuationText = noPontuationText[:match.start()] + '[' + noPontuationText[match.start():match.end()] + ']' + f'({slot_values})' + noPontuationText[match.end():]
-                                    break
+                                if slot_values == "restaurant_pricerange":
+                                  for match in re.finditer(re.escape(word), noPontuationText.lower()):
+                                      end = match.end()
+                                      for index, letter in enumerate(noPontuationText):
+                                        if index < end: continue
+                                        
+                                        if letter == ' ' : 
+                                          end = index
+                                          break
+                                        
+                                      noPontuationText = noPontuationText[:match.start()] + '[' + noPontuationText[match.start():end] + ']' + '{"entity": "' + slot_values + '", "value": "' + noPontuationText[match.start():match.end()] + '"}' + noPontuationText[end:]
+                                      break
+                                
+                                else:
+                                  for match in re.finditer(re.escape(word), noPontuationText.lower()):
+                                      noPontuationText = noPontuationText[:match.start()] + '[' + noPontuationText[match.start():match.end()] + ']' + f'({slot_values})' + noPontuationText[match.end():]
+                                      break
 
                                 gotItems.append(word)
 
@@ -335,7 +371,10 @@ def filter(data):
                             for wStartIndex, wEndIndex in wordsIndices:
                               normalizedWord = normalize(noPontuationText[wStartIndex:wEndIndex])
                               if word == normalizedWord:
-                                  noPontuationText = noPontuationText[:wStartIndex] + '[' + noPontuationText[wStartIndex:wEndIndex] + ']' + f'({slot_values})' + noPontuationText[wEndIndex:]
+                                  if slot_values == "restaurant_pricerange": 
+                                    noPontuationText = noPontuationText[:wStartIndex] + '[' + noPontuationText[wStartIndex:wEndIndex] + ']' + '{"entity": "' + slot_values + '", "value": "' + noPontuationText[wStartIndex:(wStartIndex + len(normalizedWord))] + '"}' + noPontuationText[wEndIndex:]
+
+                                  else : noPontuationText = noPontuationText[:wStartIndex] + '[' + noPontuationText[wStartIndex:(wStartIndex + len(normalizedWord))] + ']' + f'({slot_values})' + noPontuationText[wEndIndex:]
                                   
                                   gotItems.append(word)
 
@@ -346,7 +385,7 @@ def filter(data):
                         
                         # if the_active_intent == "book_restaurant" : print(noPontuationText)
                           
-                        if not onlyOther and len(dic) == 0: possibleIntents[currIntent].append(noPontuationText)
+                        if not onlyOther and len(dic) == 0: possibleIntents[currIntent].append(noPontuationText.strip())
 
 filter(myJsonTrain1)
 filter(myJsonTrain2)
@@ -372,8 +411,8 @@ f = open("nlu.yml", "w")
 f.write("nlu:\n")
 for pInt, lista in possibleIntents.items():
   f.write(f'- intent: {pInt}\n')
-  f.write(" examples: |\n")
-  f.writelines([f'  - {phrase}\n' for phrase in lista])
+  f.write("  examples: |\n")
+  f.writelines([f'    - {phrase}\n' for phrase in lista])
   f.write('\n')
 
 f.close()
