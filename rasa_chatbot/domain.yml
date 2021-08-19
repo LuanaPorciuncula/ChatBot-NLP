@@ -97,9 +97,6 @@ responses:
   - text: "There are several restaurants matching your preferences. Do you have any preference of pricerange?"
   - text: "There are several restaurants matching your preferences. What part of town would you like it?"
 
-  utter_looking_4_res:
-  - text: "Searching for {restaurant_food} restaurants in the {restaurant_area} with a {restaurant_pricerange} price..."
-
   utter_offer_book:
   - text: "Would you like to book a table?"
 
@@ -111,6 +108,7 @@ responses:
 
 actions:
 - action_find_restaurants
+- action_show_options
 
 session_config:
   session_expiration_time: 60
