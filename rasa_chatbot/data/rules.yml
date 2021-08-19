@@ -27,3 +27,4 @@ rules:
   - slot_was_set:
     - requested_slot: null
   - action: utter_looking_4_res
+  - action: action_find_restaurants
