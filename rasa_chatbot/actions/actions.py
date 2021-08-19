@@ -4,30 +4,8 @@
 # See this guide on how to implement these action:
 # https://rasa.com/docs/rasa/custom-actions
 
-
-# This is a simple example for a custom action which utters "Hello World!"
-
-# from typing import Any, Text, Dict, List
-#
-# from rasa_sdk import Action, Tracker
-# from rasa_sdk.executor import CollectingDispatcher
-#
-#
-# class ActionHelloWorld(Action):
-#
-#     def name(self) -> Text:
-#         return "action_hello_world"
-#
-#     def run(self, dispatcher: CollectingDispatcher,
-#             tracker: Tracker,
-#             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-#
-#         dispatcher.utter_message(text="Hello World!")
-#
-#         return []
-
 from typing import Any, Text, Dict, List
-import datetime as dt
+import random
 
 from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
@@ -50,16 +28,21 @@ class RestaurantAPI:
 
         print(food, area, pricerange)
         options = [x for x in filter(lambda x: x["food"] == food and x["area"] in area and x["pricerange"] == pricerange, restaurants)]
+        
+        random.shuffle(options)
+        options[:min(3, len(options))]
 
         return options
 
 
 class ActionFindRestaurants(Action):
-
-    def name(self):
+    def name(self) -> Text:
         return "action_find_restaurants"
 
-    def run(self, dispatcher, tracker, domain):
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        dispatcher.utter_message(text="looking for restaurants")
         restaurant_api = RestaurantAPI()
         res = restaurant_api.filter_res(tracker)
         return [SlotSet("restaurant_list", res)]
