@@ -311,9 +311,23 @@ def filter(data):
                         gotItems = []
                         for word, slot_values in dic.items():
                             if word in noPontuationText:
-                                for match in re.finditer(re.escape(word), noPontuationText):
-                                    noPontuationText = noPontuationText[:match.start()] + '[' + noPontuationText[match.start():match.end()] + ']' + f'({slot_values})' + noPontuationText[match.end():]
-                                    break
+                                if slot_values == "restaurant_pricerange":
+                                  for match in re.finditer(re.escape(word), noPontuationText):
+                                      end = match.end()
+                                      for index, letter in enumerate(noPontuationText):
+                                        if index < end: continue
+
+                                        if letter == ' ' : 
+                                          end = index
+                                          break
+
+                                      noPontuationText = noPontuationText[:match.start()] + '[' + noPontuationText[match.start():end] + ']' + '{"entity": "' + slot_values + '", "value": "' + noPontuationText[match.start():match.end()] + '"}' + noPontuationText[end:]
+                                      break
+
+                                else :
+                                  for match in re.finditer(re.escape(word), noPontuationText):
+                                      noPontuationText = noPontuationText[:match.start()] + '[' + noPontuationText[match.start():match.end()] + ']' + f'({slot_values})' + noPontuationText[match.end():]
+                                      break
 
                                 gotItems.append(word)
 
@@ -325,9 +339,23 @@ def filter(data):
                         gotItems = []
                         for word, slot_values in dic.items():
                             if word in noPontuationText.lower():
-                                for match in re.finditer(re.escape(word), noPontuationText.lower()):
-                                    noPontuationText = noPontuationText[:match.start()] + '[' + noPontuationText[match.start():match.end()] + ']' + f'({slot_values})' + noPontuationText[match.end():]
-                                    break
+                                if slot_values == "restaurant_pricerange":
+                                  for match in re.finditer(re.escape(word), noPontuationText.lower()):
+                                      end = match.end()
+                                      for index, letter in enumerate(noPontuationText):
+                                        if index < end: continue
+                                        
+                                        if letter == ' ' : 
+                                          end = index
+                                          break
+                                        
+                                      noPontuationText = noPontuationText[:match.start()] + '[' + noPontuationText[match.start():end] + ']' + '{"entity": "' + slot_values + '", "value": "' + noPontuationText[match.start():match.end()] + '"}' + noPontuationText[end:]
+                                      break
+                                
+                                else:
+                                  for match in re.finditer(re.escape(word), noPontuationText.lower()):
+                                      noPontuationText = noPontuationText[:match.start()] + '[' + noPontuationText[match.start():match.end()] + ']' + f'({slot_values})' + noPontuationText[match.end():]
+                                      break
 
                                 gotItems.append(word)
 
@@ -343,7 +371,10 @@ def filter(data):
                             for wStartIndex, wEndIndex in wordsIndices:
                               normalizedWord = normalize(noPontuationText[wStartIndex:wEndIndex])
                               if word == normalizedWord:
-                                  noPontuationText = noPontuationText[:wStartIndex] + '[' + noPontuationText[wStartIndex:wEndIndex] + ']' + f'({slot_values})' + noPontuationText[wEndIndex:]
+                                  if slot_values == "restaurant_pricerange": 
+                                    noPontuationText = noPontuationText[:wStartIndex] + '[' + noPontuationText[wStartIndex:wEndIndex] + ']' + '{"entity": "' + slot_values + '", "value": "' + noPontuationText[wStartIndex:(wStartIndex + len(normalizedWord))] + '"}' + noPontuationText[wEndIndex:]
+
+                                  else : noPontuationText = noPontuationText[:wStartIndex] + '[' + noPontuationText[wStartIndex:(wStartIndex + len(normalizedWord))] + ']' + f'({slot_values})' + noPontuationText[wEndIndex:]
                                   
                                   gotItems.append(word)
 
