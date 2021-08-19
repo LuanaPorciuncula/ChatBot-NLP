@@ -7,3 +7,6 @@ stories:
   - intent: greet
   - action: utter_greet
   - action: utter_offer_help
+  - intent: find_res
+  - action: find_res_form
+  - active_loop: find_res_form
