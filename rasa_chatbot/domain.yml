@@ -42,6 +42,8 @@ slots:
     type: text
   restaurant_pricerange:
     type: text
+  restaurant_list:
+    type: list
   restaurant_name:
     type: text
   restaurant_bookpeople:
@@ -88,15 +90,15 @@ responses:
 
   utter_ask_find_res_form_restaurant_area:
   - text: "Do you have any preference of area?"
-  - text: "There are several restaurants matching yout preferences. What part of town would you like it?"
+  - text: "There are several restaurants matching your preferences. What part of town would you like it?"
   
-  utter_ask_find_res_form_restaurant_price:
+  utter_ask_find_res_form_restaurant_pricerange:
   - text: "Do you have any preference of pricerange?"
-  - text: "There are several restaurants matching yout preferences. Do you have any preference of pricerange?"
-  - text: "There are several restaurants matching yout preferences. What part of town would you like it?"
+  - text: "There are several restaurants matching your preferences. Do you have any preference of pricerange?"
+  - text: "There are several restaurants matching your preferences. What part of town would you like it?"
 
   utter_looking_4_res:
-  - text: "Searching for {restaurant_pricerange} {restaurant_food} restaurants in the {restaurant_area}..."
+  - text: "Searching for {restaurant_food} restaurants in the {restaurant_area} with a {restaurant_pricerange} price..."
 
   utter_offer_book:
   - text: "Would you like to book a table?"
@@ -107,7 +109,8 @@ responses:
   - text: "You're welcome. Goodbye"
   - text: "Thank you for using our service. Goodbye!"
 
-
+actions:
+- action_find_restaurants
 
 session_config:
   session_expiration_time: 60
