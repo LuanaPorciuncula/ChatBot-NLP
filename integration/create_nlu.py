@@ -204,61 +204,60 @@ def splitWithIndices(s, c=' '):
 
 possibleIntents = {"find_res": [], "book_res": []}
 
-def getCurrIntent(slot_values, active_intent):
-  slot_values = slot_values.values()
+# def getCurrIntent(slot_values, active_intent):
+#   slot_values = slot_values.values()
 
-  if (active_intent == "find_restaurant"):
-    if "restaurant-area" in slot_values:
-      if "restaurant-food" in slot_values:
-        if "restaurant-pricerange" in slot_values : return "find_res_pricerange_area_food"
-        else : return "find_res_area_food"
-      elif "restaurant-pricerange" in slot_values : return "find_res_pricerange_area"
-      else : return "find_res_area"
+#   if (active_intent == "find_restaurant"):
+#     if "restaurant-area" in slot_values:
+#       if "restaurant-food" in slot_values:
+#         if "restaurant-pricerange" in slot_values : return "find_res_pricerange_area_food"
+#         else : return "find_res_area_food"
+#       elif "restaurant-pricerange" in slot_values : return "find_res_pricerange_area"
+#       else : return "find_res_area"
 
-    elif "restaurant-food" in slot_values:
-      if "restaurant-pricerange" in slot_values : return "find_res_pricerange_food"
-      else : return "find_res_food"
+#     elif "restaurant-food" in slot_values:
+#       if "restaurant-pricerange" in slot_values : return "find_res_pricerange_food"
+#       else : return "find_res_food"
 
-    elif "restaurant-pricerange" in slot_values: return "find_res_pricerange"
+#     elif "restaurant-pricerange" in slot_values: return "find_res_pricerange"
 
-    else : return "find_res"
+#     else : return "find_res"
 
-  else: # book
-    if "restaurant-booktime" in slot_values:
-      if "restaurant-bookday" in slot_values:
-        if "restaurant-bookpeople" in slot_values:
-          if "restaurant-name" in slot_values : return "book_res_booktime_bookday_bookpeople_name"
-          else : return "book_res_booktime_bookday_bookpeople"
+#   else: # book
+#     if "restaurant-booktime" in slot_values:
+#       if "restaurant-bookday" in slot_values:
+#         if "restaurant-bookpeople" in slot_values:
+#           if "restaurant-name" in slot_values : return "book_res_booktime_bookday_bookpeople_name"
+#           else : return "book_res_booktime_bookday_bookpeople"
 
-        elif "restaurant-name" in slot_values : return "book_res_booktime_bookday_name"
-        else : return "book_res_booktime_bookday"
+#         elif "restaurant-name" in slot_values : return "book_res_booktime_bookday_name"
+#         else : return "book_res_booktime_bookday"
 
-      elif "restaurant-bookpeople" in slot_values:
-        if "restaurant-name" in slot_values : return "book_res_booktime_bookpeople_name"
-        else : return "book_res_booktime_bookpeople"
+#       elif "restaurant-bookpeople" in slot_values:
+#         if "restaurant-name" in slot_values : return "book_res_booktime_bookpeople_name"
+#         else : return "book_res_booktime_bookpeople"
       
-      elif "restaurant-name" in slot_values : return "book_res_booktime_name"
+#       elif "restaurant-name" in slot_values : return "book_res_booktime_name"
       
-      else : return "book_res_booktime"
+#       else : return "book_res_booktime"
 
-    elif "restaurant-bookday" in slot_values:
-      if "restaurant-bookpeople" in slot_values:
-        if "restaurant-name" in slot_values : return "book_res_bookday_bookpeople_name"
-        else : return "book_res_bookday_bookpeople"
+#     elif "restaurant-bookday" in slot_values:
+#       if "restaurant-bookpeople" in slot_values:
+#         if "restaurant-name" in slot_values : return "book_res_bookday_bookpeople_name"
+#         else : return "book_res_bookday_bookpeople"
 
-      elif "restaurant-name" in slot_values : return "book_res_bookday_name"
+#       elif "restaurant-name" in slot_values : return "book_res_bookday_name"
 
-      else : return "book_res_bookday"
+#       else : return "book_res_bookday"
 
-    elif "restaurant-bookpeople" in slot_values:
-      if "restaurant-name" in slot_values : return "book_res_bookpeople_name"
-      else : return "book_res_bookpeople"
+#     elif "restaurant-bookpeople" in slot_values:
+#       if "restaurant-name" in slot_values : return "book_res_bookpeople_name"
+#       else : return "book_res_bookpeople"
 
-    elif "restaurant-name" in slot_values : return "book_res_name"
+#     elif "restaurant-name" in slot_values : return "book_res_name"
 
-    else : return "book_res"
+#     else : return "book_res"
         
-      
 
 
 def filter(data):
@@ -295,6 +294,10 @@ def filter(data):
                         # ver o tipo de frase que estamos lidando
                         currIntent = the_active_intent.replace("restaurant", "res")
 
+                        # bad dataset
+                        if "steakhouses" in dic.keys() and "steakhouse" in dic.keys() : dic.pop("steakhouses")
+                        if utterance == "Where is the Addenbrookes Hospital located?" : continue
+
                         # tirar pontuação
                         noPontuationText = ""
                         lastLetter = None
@@ -311,7 +314,7 @@ def filter(data):
                         gotItems = []
                         for word, slot_values in dic.items():
                             if word in noPontuationText:
-                                if slot_values == "restaurant_pricerange":
+                                if slot_values == "restaurant_pricerange" or slot_values == "restaurant_area":
                                   for match in re.finditer(re.escape(word), noPontuationText):
                                       end = match.end()
                                       for index, letter in enumerate(noPontuationText):
@@ -339,7 +342,7 @@ def filter(data):
                         gotItems = []
                         for word, slot_values in dic.items():
                             if word in noPontuationText.lower():
-                                if slot_values == "restaurant_pricerange":
+                                if slot_values == "restaurant_pricerange" or slot_values == "restaurant_area":
                                   for match in re.finditer(re.escape(word), noPontuationText.lower()):
                                       end = match.end()
                                       for index, letter in enumerate(noPontuationText):
@@ -371,7 +374,7 @@ def filter(data):
                             for wStartIndex, wEndIndex in wordsIndices:
                               normalizedWord = normalize(noPontuationText[wStartIndex:wEndIndex])
                               if word == normalizedWord:
-                                  if slot_values == "restaurant_pricerange": 
+                                  if slot_values == "restaurant_pricerange" or slot_values == "restaurant_area":
                                     noPontuationText = noPontuationText[:wStartIndex] + '[' + noPontuationText[wStartIndex:wEndIndex] + ']' + '{"entity": "' + slot_values + '", "value": "' + noPontuationText[wStartIndex:(wStartIndex + len(normalizedWord))] + '"}' + noPontuationText[wEndIndex:]
 
                                   else : noPontuationText = noPontuationText[:wStartIndex] + '[' + noPontuationText[wStartIndex:(wStartIndex + len(normalizedWord))] + ']' + f'({slot_values})' + noPontuationText[wEndIndex:]
