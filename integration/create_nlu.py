@@ -4,6 +4,7 @@ import json
 import re
 import unicodedata
 from itertools import groupby
+from word2number import w2n
 
 ctx = ssl.create_default_context()
 ctx.check_hostname = False
@@ -296,6 +297,8 @@ def filter(data):
 
                         # bad dataset
                         if "steakhouses" in dic.keys() and "steakhouse" in dic.keys() : dic.pop("steakhouses")
+                        if "corsican" in dic.keys() and "corsica" in dic.keys() : dic.pop("corsican")
+                        if "gastropubs" in dic.keys() and "gastropub" in dic.keys() : dic.pop("gastropubs")
                         if utterance == "Where is the Addenbrookes Hospital located?" : continue
 
                         # tirar pontuação
@@ -314,23 +317,15 @@ def filter(data):
                         gotItems = []
                         for word, slot_values in dic.items():
                             if word in noPontuationText:
-                                if slot_values == "restaurant_pricerange" or slot_values == "restaurant_area":
-                                  for match in re.finditer(re.escape(word), noPontuationText):
-                                      end = match.end()
-                                      for index, letter in enumerate(noPontuationText):
-                                        if index < end: continue
+                                selectedMatch = None
+                                for match in re.finditer(re.escape(word), noPontuationText):
+                                    if (match.start() == 0 or noPontuationText[match.start()-1] == ' ') and (len(noPontuationText) == match.end() or noPontuationText[match.end()] == ' '):
+                                        selectedMatch = (match.start(), match.end())
+                                        break
 
-                                        if letter == ' ' : 
-                                          end = index
-                                          break
+                                if selectedMatch is None: continue
 
-                                      noPontuationText = noPontuationText[:match.start()] + '[' + noPontuationText[match.start():end] + ']' + '{"entity": "' + slot_values + '", "value": "' + noPontuationText[match.start():match.end()] + '"}' + noPontuationText[end:]
-                                      break
-
-                                else :
-                                  for match in re.finditer(re.escape(word), noPontuationText):
-                                      noPontuationText = noPontuationText[:match.start()] + '[' + noPontuationText[match.start():match.end()] + ']' + f'({slot_values})' + noPontuationText[match.end():]
-                                      break
+                                noPontuationText = noPontuationText[:selectedMatch[0]] + '[' + noPontuationText[selectedMatch[0]:selectedMatch[1]] + ']' + '{"entity": "' + slot_values + '", "value": "' + word + '"}' + noPontuationText[selectedMatch[1]:]
 
                                 gotItems.append(word)
 
@@ -342,23 +337,15 @@ def filter(data):
                         gotItems = []
                         for word, slot_values in dic.items():
                             if word in noPontuationText.lower():
-                                if slot_values == "restaurant_pricerange" or slot_values == "restaurant_area":
-                                  for match in re.finditer(re.escape(word), noPontuationText.lower()):
-                                      end = match.end()
-                                      for index, letter in enumerate(noPontuationText):
-                                        if index < end: continue
-                                        
-                                        if letter == ' ' : 
-                                          end = index
-                                          break
-                                        
-                                      noPontuationText = noPontuationText[:match.start()] + '[' + noPontuationText[match.start():end] + ']' + '{"entity": "' + slot_values + '", "value": "' + noPontuationText[match.start():match.end()] + '"}' + noPontuationText[end:]
-                                      break
-                                
-                                else:
-                                  for match in re.finditer(re.escape(word), noPontuationText.lower()):
-                                      noPontuationText = noPontuationText[:match.start()] + '[' + noPontuationText[match.start():match.end()] + ']' + f'({slot_values})' + noPontuationText[match.end():]
-                                      break
+                                selectedMatch = None
+                                for match in re.finditer(re.escape(word), noPontuationText.lower()):
+                                    if (match.start() == 0 or noPontuationText[match.start()-1] == ' ') and (len(noPontuationText) == match.end() or noPontuationText[match.end()] == ' '):
+                                        selectedMatch = (match.start(), match.end())
+                                        break
+
+                                if selectedMatch is None: continue
+
+                                noPontuationText = noPontuationText[:selectedMatch[0]] + '[' + noPontuationText[selectedMatch[0]:selectedMatch[1]] + ']' + '{"entity": "' + slot_values + '", "value": "' + word + '"}' + noPontuationText[selectedMatch[1]:]
 
                                 gotItems.append(word)
 
@@ -372,14 +359,22 @@ def filter(data):
                         
                         for word, slot_values in dic.items():
                             for wStartIndex, wEndIndex in wordsIndices:
-                              normalizedWord = normalize(noPontuationText[wStartIndex:wEndIndex])
-                              if word == normalizedWord:
-                                  if slot_values == "restaurant_pricerange" or slot_values == "restaurant_area":
-                                    noPontuationText = noPontuationText[:wStartIndex] + '[' + noPontuationText[wStartIndex:wEndIndex] + ']' + '{"entity": "' + slot_values + '", "value": "' + noPontuationText[wStartIndex:(wStartIndex + len(normalizedWord))] + '"}' + noPontuationText[wEndIndex:]
-
-                                  else : noPontuationText = noPontuationText[:wStartIndex] + '[' + noPontuationText[wStartIndex:(wStartIndex + len(normalizedWord))] + ']' + f'({slot_values})' + noPontuationText[wEndIndex:]
+                                normalizedWord = normalize(noPontuationText[wStartIndex:wEndIndex])
+                                if word == normalizedWord:
+                                    noPontuationText = noPontuationText[:wStartIndex] + '[' + noPontuationText[wStartIndex:wEndIndex] + ']' + '{"entity": "' + slot_values + '", "value": "' + word + '"}' + noPontuationText[wEndIndex:]
                                   
-                                  gotItems.append(word)
+                                    gotItems.append(word)
+                                
+                                normalizedWord = None
+                                try:
+                                    normalizedWord = w2n.word_to_num(noPontuationText[wStartIndex:wEndIndex])
+                                except: pass
+
+                                if normalizedWord and word == normalizedWord:
+                                    noPontuationText = noPontuationText[:wStartIndex] + '[' + noPontuationText[wStartIndex:wEndIndex] + ']' + '{"entity": "' + slot_values + '", "value": "' + word + '"}' + noPontuationText[wEndIndex:]
+                                
+                                    gotItems.append(word)
+
 
                         for key in gotItems:
                             if key != "O" : onlyOther = False
