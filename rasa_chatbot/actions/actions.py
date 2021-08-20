@@ -61,7 +61,7 @@ class ActionShowOptions(Action):
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         res = tracker.get_slot("restaurant_list")
 
-        buttons = [{"title": x["name"], "payload": '/affirm{"name":"' + x["name"] + '"}'} for x in res] + [{"title": "No option", "payload": "/goodbye"}]
+        buttons = [{"title": x["name"], "payload": '/affirm{"restaurant_name":"' + x["name"] + '"}'} for x in res] + [{"title": "No option", "payload": "/goodbye"}]
         dispatcher.utter_message(text="here's what I found:", buttons=buttons)
 
         return []

@@ -10,3 +10,10 @@ stories:
   - intent: find_res
   - action: find_res_form
   - active_loop: find_res_form
+
+- story: continue conv deny 
+  steps:
+  - action: utter_ask_4_more
+  - intent: deny
+  - action: utter_goodbye
+  

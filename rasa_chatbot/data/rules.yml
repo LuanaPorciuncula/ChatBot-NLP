@@ -12,6 +12,42 @@ rules:
   - intent: nlu_fallback
   - action: utter_please_rephrase
 
+- rule: Activate book_res_form
+  condition:
+  - slot_was_set:
+    - restaurant_name: restaurant_name
+  steps:
+  - action: utter_offer_book
+  - intent: affirm
+  - action: book_res_form
+  - active_loop: book_res_form
+
+- rule: Activate book_res_form 2
+  steps:
+  - intent: book_res
+  - action: book_res_form
+  - active_loop: book_res_form
+
+- rule: Activate book_res_form 3
+  steps:
+  - intent: affirm
+    entities:
+    - restaurant_name: restaurant_name
+  - slot_was_set:
+    - restaurant_name: restaurant_name
+  - action: utter_offer_book
+
+- rule: Submit book_res_form
+  condition:
+    - active_loop: book_res_form
+  steps:
+  - action: book_res_form
+  - active_loop: null
+  - slot_was_set:
+    - requested_slot: null
+  - action: utter_booking_completed
+  - action: utter_ask_4_more
+
 - rule: Activate find_res_form
   steps:
   - intent: find_res
@@ -28,3 +64,4 @@ rules:
     - requested_slot: null
   - action: action_find_restaurants
   - action: action_show_options
+
