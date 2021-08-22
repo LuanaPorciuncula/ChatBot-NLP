@@ -259,7 +259,30 @@ possibleIntents = {"find_res": [], "book_res": []}
 
 #     else : return "book_res"
         
-
+_SIMILAR_WORDS = {
+    'portuguese': ['portugese', 'portugeuese'],
+    '01:30': ['1 thirty p  m'],
+    '16:30': ['after 16:00'],
+    'anatolia': ['anatoilia'],
+    'allenbell': ['allenball'],
+    'caribbean': ['carribbean'],
+    'seafood': ['sea food'],
+    'moroccan': ['morrocan'],
+    'avalon': ['avaion'],
+    'barbeque': ['bbq'],
+    'american': ['americas'],
+    'italian': ['pizza place'],
+    'indian': ['taj tandoori'],
+    'british': ['english'],
+    'cambridge': ['cambride'],
+    'fen ditton': ['fenditton'],
+    'caffe': ['cafe'],
+    'gonville': ['gonvile'],
+    'shaddia': ['shaddai'],
+    'center': ['centre'],
+    'centre': ['center'],
+    'japanese': ['japanise']
+}
 
 def filter(data):
   for i, obj in enumerate(data):
@@ -272,7 +295,6 @@ def filter(data):
                   frames = turn.get("frames", None)
                   if frames:
                       dic = dict()
-                      res = [[], []]
                       the_active_intent = None
                       for frame in frames: 
                           state = frame.get("state", None)
@@ -299,7 +321,17 @@ def filter(data):
                         if "steakhouses" in dic.keys() and "steakhouse" in dic.keys() : dic.pop("steakhouses")
                         if "corsican" in dic.keys() and "corsica" in dic.keys() : dic.pop("corsican")
                         if "gastropubs" in dic.keys() and "gastropub" in dic.keys() : dic.pop("gastropubs")
+                        if "carribbean" in dic.keys() and "caribbean" in dic.keys() : dic.pop("carribbean")
+                        if "portugese" in dic.keys() and "portuguese" in dic.keys() : dic.pop("portugese")
+                        if "sea food" in dic.keys() and "seafood" in dic.keys() : dic.pop("sea food")
+                        if "american" in dic.keys() and "americas" in dic.keys() : dic.pop("americas")
+                        if "moroccan" in dic.keys() and "morrocan" in dic.keys() : dic.pop("morrocan")
+                        if "east" in dic.keys() and "eastern european" in dic.keys() : dic.pop("eastern european")
+                        if "bbq" in dic.keys() and "barbeque" in dic.keys() : dic.pop("bbq")
                         if utterance == "Where is the Addenbrookes Hospital located?" : continue
+                        if utterance == "I need a restaurant called the bedouin for the same group of people at 14:15 and I would need the reference number." : continue
+                        if utterance == "Can you book me a table at nandos city centre for 21:00 and give me a ref number" : continue
+                        if utterance == "Can you help me find a restaurant in the south that doesn't cost a lot of money. In fact, I need one that's quite inexpensive." : continue
 
                         # tirar pontuação
                         noPontuationText = ""
@@ -323,11 +355,26 @@ def filter(data):
                                         selectedMatch = (match.start(), match.end())
                                         break
 
-                                if selectedMatch is None: continue
+                                if selectedMatch:
+                                    noPontuationText = noPontuationText[:selectedMatch[0]] + '[' + noPontuationText[selectedMatch[0]:selectedMatch[1]] + ']' + '{"entity": "' + slot_values + '", "value": "' + word + '"}' + noPontuationText[selectedMatch[1]:]
 
-                                noPontuationText = noPontuationText[:selectedMatch[0]] + '[' + noPontuationText[selectedMatch[0]:selectedMatch[1]] + ']' + '{"entity": "' + slot_values + '", "value": "' + word + '"}' + noPontuationText[selectedMatch[1]:]
+                                    gotItems.append(word)
 
-                                gotItems.append(word)
+                            elif _SIMILAR_WORDS.get(word, None):
+                                for _word in _SIMILAR_WORDS.get(word):
+                                    if _word in noPontuationText:
+                                        selectedMatch = None
+                                        for match in re.finditer(re.escape(_word), noPontuationText):
+                                            if (match.start() == 0 or noPontuationText[match.start()-1] == ' ') and (len(noPontuationText) == match.end() or noPontuationText[match.end()] == ' '):
+                                                selectedMatch = (match.start(), match.end())
+                                                break
+
+                                        if selectedMatch:
+                                            noPontuationText = noPontuationText[:selectedMatch[0]] + '[' + noPontuationText[selectedMatch[0]:selectedMatch[1]] + ']' + '{"entity": "' + slot_values + '", "value": "' + word + '"}' + noPontuationText[selectedMatch[1]:]
+
+                                            gotItems.append(word)
+                                            break
+
 
                         for key in gotItems:
                             if key != "O" : onlyOther = False
@@ -343,11 +390,25 @@ def filter(data):
                                         selectedMatch = (match.start(), match.end())
                                         break
 
-                                if selectedMatch is None: continue
+                                if selectedMatch:
+                                    noPontuationText = noPontuationText[:selectedMatch[0]] + '[' + noPontuationText[selectedMatch[0]:selectedMatch[1]] + ']' + '{"entity": "' + slot_values + '", "value": "' + word + '"}' + noPontuationText[selectedMatch[1]:]
 
-                                noPontuationText = noPontuationText[:selectedMatch[0]] + '[' + noPontuationText[selectedMatch[0]:selectedMatch[1]] + ']' + '{"entity": "' + slot_values + '", "value": "' + word + '"}' + noPontuationText[selectedMatch[1]:]
+                                    gotItems.append(word)
 
-                                gotItems.append(word)
+                            elif _SIMILAR_WORDS.get(word, None):
+                                for _word in _SIMILAR_WORDS.get(word):
+                                    if _word in noPontuationText.lower():
+                                        selectedMatch = None
+                                        for match in re.finditer(re.escape(_word), noPontuationText.lower()):
+                                            if (match.start() == 0 or noPontuationText[match.start()-1] == ' ') and (len(noPontuationText) == match.end() or noPontuationText[match.end()] == ' '):
+                                                selectedMatch = (match.start(), match.end())
+                                                break
+
+                                        if selectedMatch:
+                                            noPontuationText = noPontuationText[:selectedMatch[0]] + '[' + noPontuationText[selectedMatch[0]:selectedMatch[1]] + ']' + '{"entity": "' + slot_values + '", "value": "' + word + '"}' + noPontuationText[selectedMatch[1]:]
+
+                                            gotItems.append(word)
+                                            break
 
                         for key in gotItems:
                             if key != "O" : onlyOther = False
@@ -360,10 +421,20 @@ def filter(data):
                         for word, slot_values in dic.items():
                             for wStartIndex, wEndIndex in wordsIndices:
                                 normalizedWord = normalize(noPontuationText[wStartIndex:wEndIndex])
+                                similarWords = _SIMILAR_WORDS.get(word, None)
                                 if word == normalizedWord:
                                     noPontuationText = noPontuationText[:wStartIndex] + '[' + noPontuationText[wStartIndex:wEndIndex] + ']' + '{"entity": "' + slot_values + '", "value": "' + word + '"}' + noPontuationText[wEndIndex:]
                                   
                                     gotItems.append(word)
+                                    continue
+
+                                if similarWords:
+                                    for _word in similarWords:
+                                        if _word == normalizedWord:
+                                            noPontuationText = noPontuationText[:wStartIndex] + '[' + noPontuationText[wStartIndex:wEndIndex] + ']' + '{"entity": "' + slot_values + '", "value": "' + word + '"}' + noPontuationText[wEndIndex:]
+
+                                            gotItems.append(word)
+                                            break
                                 
                                 normalizedWord = None
                                 try:
@@ -374,7 +445,118 @@ def filter(data):
                                     noPontuationText = noPontuationText[:wStartIndex] + '[' + noPontuationText[wStartIndex:wEndIndex] + ']' + '{"entity": "' + slot_values + '", "value": "' + word + '"}' + noPontuationText[wEndIndex:]
                                 
                                     gotItems.append(word)
+                                
+                                elif similarWords and normalizedWord:
+                                    for _word in similarWords:
+                                        if _word == normalizedWord:
+                                            noPontuationText = noPontuationText[:wStartIndex] + '[' + noPontuationText[wStartIndex:wEndIndex] + ']' + '{"entity": "' + slot_values + '", "value": "' + word + '"}' + noPontuationText[wEndIndex:]
 
+                                            gotItems.append(word)
+                                            break
+
+
+                        for key in gotItems:
+                            if key != "O" : onlyOther = False
+                            dic.pop(key)
+
+                        # tentar achar labels na frase original (sem pontuação)
+                        gotItems = []
+                        for word, slot_values in dic.items():
+                            if word in noPontuationText:
+                                selectedMatch = None
+                                for match in re.finditer(re.escape(word), noPontuationText):
+                                    if (match.start() == 0 or noPontuationText[match.start()-1] == ' ') and (len(noPontuationText) == match.end() or noPontuationText[match.end()] == ' '):
+                                        selectedMatch = (match.start(), match.end())
+                                        break
+
+                                if selectedMatch is None:
+                                    for match in re.finditer(re.escape(word), noPontuationText):
+                                        selectedMatch = (match.start(), match.end())
+                                        break
+
+                                    for index, letter in enumerate(noPontuationText):
+                                        if index < selectedMatch[1]: continue
+
+                                        if letter == ' ' : 
+                                          selectedMatch = (selectedMatch[0], index)
+                                          break
+
+                                noPontuationText = noPontuationText[:selectedMatch[0]] + '[' + noPontuationText[selectedMatch[0]:selectedMatch[1]] + ']' + '{"entity": "' + slot_values + '", "value": "' + word + '"}' + noPontuationText[selectedMatch[1]:]
+
+                                gotItems.append(word)
+
+                            elif _SIMILAR_WORDS.get(word, None):
+                                for _word in _SIMILAR_WORDS.get(word):
+                                    if _word in noPontuationText:
+                                        selectedMatch = None
+                                        for match in re.finditer(re.escape(_word), noPontuationText):
+                                            if (match.start() == 0 or noPontuationText[match.start()-1] == ' ') and (len(noPontuationText) == match.end() or noPontuationText[match.end()] == ' '):
+                                                selectedMatch = (match.start(), match.end())
+                                                break
+
+                                        if selectedMatch is None: 
+                                            for match in re.finditer(re.escape(_word), noPontuationText):
+                                                selectedMatch = (match.start(), match.end())
+                                                break
+
+                                            for index, letter in enumerate(noPontuationText):
+                                                if index < selectedMatch[1]: continue
+
+                                                if letter == ' ' : 
+                                                    selectedMatch = (selectedMatch[0], index)
+                                                    break
+
+                                        noPontuationText = noPontuationText[:selectedMatch[0]] + '[' + noPontuationText[selectedMatch[0]:selectedMatch[1]] + ']' + '{"entity": "' + slot_values + '", "value": "' + word + '"}' + noPontuationText[selectedMatch[1]:]
+
+                                        gotItems.append(word)
+                                        break
+
+
+                        for key in gotItems:
+                            if key != "O" : onlyOther = False
+                            dic.pop(key)
+
+                        # tentar achar labels na frase original (sem pontuação) com lower case
+                        gotItems = []
+                        for word, slot_values in dic.items():
+                            if word in noPontuationText.lower():
+                                selectedMatch = None
+
+                                for match in re.finditer(re.escape(word), noPontuationText.lower()):
+                                    selectedMatch = (match.start(), match.end())
+                                    break
+
+                                for index, letter in enumerate(noPontuationText):
+                                    if index < selectedMatch[1]: continue
+
+                                    if letter == ' ' : 
+                                        selectedMatch = (selectedMatch[0], index)
+                                        break
+
+                                noPontuationText = noPontuationText[:selectedMatch[0]] + '[' + noPontuationText[selectedMatch[0]:selectedMatch[1]] + ']' + '{"entity": "' + slot_values + '", "value": "' + word + '"}' + noPontuationText[selectedMatch[1]:]
+
+                                gotItems.append(word)
+
+                            elif _SIMILAR_WORDS.get(word, None):
+                                for _word in _SIMILAR_WORDS.get(word):
+                                    if _word in noPontuationText.lower():
+                                        selectedMatch = None
+
+                                        for match in re.finditer(re.escape(_word), noPontuationText.lower()):
+                                            selectedMatch = (match.start(), match.end())
+                                            break
+
+                                        for index, letter in enumerate(noPontuationText):
+                                            if index < selectedMatch[1]: continue
+
+                                            if letter == ' ' : 
+                                                selectedMatch = (selectedMatch[0], index)
+                                                break
+
+                                        noPontuationText = noPontuationText[:selectedMatch[0]] + '[' + noPontuationText[selectedMatch[0]:selectedMatch[1]] + ']' + '{"entity": "' + slot_values + '", "value": "' + word + '"}' + noPontuationText[selectedMatch[1]:]
+
+                                        gotItems.append(word)
+                                        break
 
                         for key in gotItems:
                             if key != "O" : onlyOther = False
