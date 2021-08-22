@@ -1,0 +1,242 @@
+[
+  {
+    "text": "good afternoon",
+    "intent": "goodbye",
+    "intent_prediction": {
+      "name": "greet",
+      "confidence": 0.9996091723442078
+    }
+  },
+  {
+    "text": "have a nice day",
+    "intent": "goodbye",
+    "intent_prediction": {
+      "name": "find_res",
+      "confidence": 0.9361014366149902
+    }
+  },
+  {
+    "text": "indeed",
+    "intent": "affirm",
+    "intent_prediction": {
+      "name": "greet",
+      "confidence": 0.9313732385635376
+    }
+  },
+  {
+    "text": "not really",
+    "intent": "deny",
+    "intent_prediction": {
+      "name": "find_res",
+      "confidence": 0.9999996423721313
+    }
+  },
+  {
+    "text": "I am looking for a restaurant in the centre area in the cheap range I would like a table for 7 people at 12:30 on Wednesday",
+    "intent": "find_res",
+    "intent_prediction": {
+      "name": "book_res",
+      "confidence": 0.9998456239700317
+    }
+  },
+  {
+    "text": "of course",
+    "intent": "affirm",
+    "intent_prediction": {
+      "name": "find_res",
+      "confidence": 0.8505356907844543
+    }
+  },
+  {
+    "text": "7:17 please I would like to book for 8 people and i need the reference number I would also like to book at Bangkok City restaurant",
+    "intent": "find_res",
+    "intent_prediction": {
+      "name": "book_res",
+      "confidence": 0.8309524059295654
+    }
+  },
+  {
+    "text": "I would like a moderate price range and in the centre Would you be able to book a table for friday at 19:30 It would be for 2",
+    "intent": "find_res",
+    "intent_prediction": {
+      "name": "book_res",
+      "confidence": 0.8643381595611572
+    }
+  },
+  {
+    "text": "Also I need to find an expensive chinese restaurant book the table for 3 at 16:45 on tuesday",
+    "intent": "find_res",
+    "intent_prediction": {
+      "name": "book_res",
+      "confidence": 0.9995434880256653
+    }
+  },
+  {
+    "text": "I m sorry I don t need a hotel I do need to make a reservation for a table at Panahar for Wednesday afternoon Can you help me with that",
+    "intent": "book_res",
+    "intent_prediction": {
+      "name": "find_res",
+      "confidence": 0.9784732460975647
+    }
+  },
+  {
+    "text": "Whats up?",
+    "intent": "greet",
+    "intent_prediction": {
+      "name": "find_res",
+      "confidence": 0.99657142162323
+    }
+  },
+  {
+    "text": "correct",
+    "intent": "affirm",
+    "intent_prediction": {
+      "name": "deny",
+      "confidence": 0.3920536935329437
+    }
+  },
+  {
+    "text": "Yes I need a place to eat Mexican food is good it should be in the south and expensive",
+    "intent": "book_res",
+    "intent_prediction": {
+      "name": "find_res",
+      "confidence": 1.0
+    }
+  },
+  {
+    "text": "moin",
+    "intent": "greet",
+    "intent_prediction": {
+      "name": "deny",
+      "confidence": 0.9446578621864319
+    }
+  },
+  {
+    "text": "that sounds good",
+    "intent": "affirm",
+    "intent_prediction": {
+      "name": "greet",
+      "confidence": 0.5518182516098022
+    }
+  },
+  {
+    "text": "never",
+    "intent": "deny",
+    "intent_prediction": {
+      "name": "greet",
+      "confidence": 0.49034756422042847
+    }
+  },
+  {
+    "text": "The Hakka restaurant is located at 24 Milton Road Cambridge Cambridgeshire CB4 1JY The average cost is approximately 30 per person",
+    "intent": "find_res",
+    "intent_prediction": {
+      "name": "book_res",
+      "confidence": 0.9721924066543579
+    }
+  },
+  {
+    "text": "Find expensive welsh food or if not welsh indian for 6 people at 10:30 Sunday I need a reference number please",
+    "intent": "find_res",
+    "intent_prediction": {
+      "name": "book_res",
+      "confidence": 0.9999556541442871
+    }
+  },
+  {
+    "text": "Your train leaves Cambridge at 15:29 and arrives at 16:07 at Bishops Stortford I will also look for you a japanese restaurant in centre and expensive",
+    "intent": "find_res",
+    "intent_prediction": {
+      "name": "book_res",
+      "confidence": 0.9984638690948486
+    }
+  },
+  {
+    "text": "Hello is Panahar still serving lunch specials",
+    "intent": "book_res",
+    "intent_prediction": {
+      "name": "find_res",
+      "confidence": 0.9999998807907104
+    }
+  },
+  {
+    "text": "It is the Pizza Hut City Centre I d like to eat there on Monday if you could reserve a table for me",
+    "intent": "book_res",
+    "intent_prediction": {
+      "name": "find_res",
+      "confidence": 0.9816181063652039
+    }
+  },
+  {
+    "text": "good afternoon",
+    "intent": "greet",
+    "intent_prediction": {
+      "name": "goodbye",
+      "confidence": 0.9985672235488892
+    }
+  },
+  {
+    "text": "cu",
+    "intent": "goodbye",
+    "intent_prediction": {
+      "name": "greet",
+      "confidence": 0.7169268727302551
+    }
+  },
+  {
+    "text": "yes",
+    "intent": "affirm",
+    "intent_prediction": {
+      "name": "greet",
+      "confidence": 0.567729651927948
+    }
+  },
+  {
+    "text": "I don't think so",
+    "intent": "deny",
+    "intent_prediction": {
+      "name": "find_res",
+      "confidence": 1.0
+    }
+  },
+  {
+    "text": "don't like that",
+    "intent": "deny",
+    "intent_prediction": {
+      "name": "find_res",
+      "confidence": 1.0
+    }
+  },
+  {
+    "text": "Yes I am looking for a guesthouse in the north Can you book it for 2 nights starting Saturday for 1 person",
+    "intent": "find_res",
+    "intent_prediction": {
+      "name": "book_res",
+      "confidence": 0.9999562501907349
+    }
+  },
+  {
+    "text": "I need 3 rooms for nights in a cheap hotel",
+    "intent": "find_res",
+    "intent_prediction": {
+      "name": "book_res",
+      "confidence": 0.9994556307792664
+    }
+  },
+  {
+    "text": "Howdy I m looking for a British restaurant for breakfast",
+    "intent": "book_res",
+    "intent_prediction": {
+      "name": "find_res",
+      "confidence": 1.0
+    }
+  },
+  {
+    "text": "Yes can you find me a restaurant for Friday night of that week",
+    "intent": "book_res",
+    "intent_prediction": {
+      "name": "find_res",
+      "confidence": 0.9999909996986389
+    }
+  }
+]

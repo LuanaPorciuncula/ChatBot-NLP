@@ -1,0 +1,75 @@
+{
+  "restaurant_bookpeople": {
+    "precision": 0.8125,
+    "recall": 0.9285714285714286,
+    "f1-score": 0.8666666666666666,
+    "support": 56,
+    "confused_with": {}
+  },
+  "restaurant_name": {
+    "precision": 0.9617747440273038,
+    "recall": 0.9825662482566249,
+    "f1-score": 0.9720593308037254,
+    "support": 1434,
+    "confused_with": {
+      "restaurant_food": 4
+    }
+  },
+  "restaurant_bookday": {
+    "precision": 0.8939393939393939,
+    "recall": 1.0,
+    "f1-score": 0.944,
+    "support": 59,
+    "confused_with": {}
+  },
+  "restaurant_pricerange": {
+    "precision": 0.978112840466926,
+    "recall": 0.9925962487660415,
+    "f1-score": 0.9853013228809406,
+    "support": 2026,
+    "confused_with": {}
+  },
+  "restaurant_booktime": {
+    "precision": 0.8688524590163934,
+    "recall": 0.9814814814814815,
+    "f1-score": 0.9217391304347826,
+    "support": 54,
+    "confused_with": {}
+  },
+  "restaurant_area": {
+    "precision": 0.9792069632495164,
+    "recall": 0.9926470588235294,
+    "f1-score": 0.9858812074001948,
+    "support": 2040,
+    "confused_with": {
+      "restaurant_food": 10
+    }
+  },
+  "restaurant_food": {
+    "precision": 0.9694940476190477,
+    "recall": 0.9837674594186485,
+    "f1-score": 0.9765786022109799,
+    "support": 2649,
+    "confused_with": {
+      "restaurant_area": 14
+    }
+  },
+  "micro avg": {
+    "precision": 0.9701228153046765,
+    "recall": 0.9876172156768454,
+    "f1-score": 0.9787918503514834,
+    "support": 8318
+  },
+  "macro avg": {
+    "precision": 0.9234114926169401,
+    "recall": 0.9802328464739649,
+    "f1-score": 0.9503180371996127,
+    "support": 8318
+  },
+  "weighted avg": {
+    "precision": 0.9703984121089596,
+    "recall": 0.9876172156768454,
+    "f1-score": 0.9788784788722557,
+    "support": 8318
+  }
+}
