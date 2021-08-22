@@ -6,7 +6,6 @@ stories:
   steps:
   - intent: greet
   - action: utter_greet
-  - action: 
   - intent: find_res
   - action: find_res_form
   - active_loop: find_res_form
