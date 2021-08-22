@@ -16,7 +16,7 @@ pipeline:
     max_ngram: 4
   - name: DIETClassifier
     constrain_similarities: True
-    epochs: 30
+    epochs: 100
   - name: EntitySynonymMapper
   - name: ResponseSelector
     constrain_similarities: True
