@@ -1,5 +1,102 @@
-version: "2.0"
-
+version: '2.0'
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: true
+intents:
+- greet
+- book_res
+- deny
+- find_res
+- affirm
+- goodbye
+entities:
+- restaurant_area
+- restaurant_bookday
+- restaurant_bookpeople
+- restaurant_booktime
+- restaurant_food
+- restaurant_name
+- restaurant_pricerange
+slots:
+  restaurant_food:
+    type: text
+    influence_conversation: true
+  restaurant_area:
+    type: text
+    influence_conversation: true
+  restaurant_pricerange:
+    type: text
+    influence_conversation: true
+  restaurant_list:
+    type: list
+    influence_conversation: true
+  restaurant_name:
+    type: text
+    influence_conversation: true
+  restaurant_bookpeople:
+    type: text
+    influence_conversation: true
+  restaurant_bookday:
+    type: text
+    influence_conversation: true
+  restaurant_booktime:
+    type: text
+    influence_conversation: true
+responses:
+  utter_greet:
+  - text: Hey!
+  - text: Hi!
+  - text: Hello!
+  utter_offer_help:
+  - text: How may I assist you?
+  - text: How may I help you?
+  utter_ask_rephrase:
+  - text: Sorry, I didn’t quite get that. Can you rephrase?
+  - text: Sorry, I didn't get that. Can you rephrase?
+  utter_default:
+  - text: I'm sorry, I can't help you.
+  - text: I'm sorry, I don't understand you.
+  utter_ask_find_res_form_restaurant_food:
+  - text: Do you have any preference of food type?
+  - text: What kind of food would you like?
+  utter_ask_find_res_form_restaurant_area:
+  - text: Do you have any preference of area?
+  - text: There are several restaurants matching your preferences. What part of town would you like it?
+  utter_ask_find_res_form_restaurant_pricerange:
+  - text: Do you have any preference of pricerange?
+  - text: There are several restaurants matching your preferences. Do you have any preference of pricerange?
+  - text: There are several restaurants matching your preferences. What part of town would you like it?
+  utter_offer_book:
+  - text: Would you like to book a table at {restaurant_name}?
+  utter_ask_book_res_form_restaurant_name:
+  - text: Do you have any restaurant in mind?
+  utter_ask_book_res_form_restaurant_bookpeople:
+  - text: Do you need a table for how many people?
+  utter_ask_book_res_form_restaurant_bookday:
+  - text: For when do you need your reservation?
+  utter_ask_book_res_form_restaurant_booktime:
+  - text: What time do you need your reservation?
+  utter_booking_completed:
+  - text: Booked a table at {restaurant_name} for {restaurant_bookpeople} on {restaurant_bookday} at {restaurant_booktime}
+  utter_ask_4_more:
+  - text: Do you need anything else?
+  utter_goodbye:
+  - text: Bye
+  - text: Goodbye
+  - text: You're welcome. Goodbye
+  - text: Thank you for using our services. Goodbye!
+actions:
+- action_find_restaurants
+- action_show_options
+- action_reset_find_res_slots
+- action_reset_book_res_slots
+- action_reset_all_slots
+- utter_ask_4_more
+- utter_booking_completed
+- utter_goodbye
+- utter_greet
+- utter_offer_book
+- utter_offer_help
 forms:
   find_res_form:
     required_slots:
@@ -15,7 +112,6 @@ forms:
       - type: from_entity
         entity: restaurant_pricerange
         intent: find_res
-
   book_res_form:
     required_slots:
       restaurant_name:
@@ -34,100 +130,3 @@ forms:
       - type: from_entity
         entity: restaurant_booktime
         intent: book_res
-
-slots:
-  restaurant_food:
-    type: text
-  restaurant_area:
-    type: text
-  restaurant_pricerange:
-    type: text
-  restaurant_list:
-    type: list
-  restaurant_name:
-    type: text
-  restaurant_bookpeople:
-    type: text
-  restaurant_bookday:
-    type: text
-  restaurant_booktime:
-    type: text
-
-entities:
-  - restaurant_food
-  - restaurant_area
-  - restaurant_pricerange
-  - restaurant_name
-  - restaurant_bookpeople
-  - restaurant_bookday
-  - restaurant_booktime
-
-intents:
-  - greet
-  - goodbye
-  - affirm
-  - deny
-  - find_res
-  - book_res
-
-responses:
-  utter_greet:
-  - text: "Hey!"
-  - text: "Hi!"
-  - text: "Hello!"
-  
-  utter_offer_help:
-  - text: "How may I assist you?"
-  - text: "How may I help you?"
-  
-  utter_please_rephrase:
-  - text: "Sorry, I didn’t quite get that."
-  - text: "Sorry, I didn't get that. Can you rephrase?"
-
-  utter_ask_find_res_form_restaurant_food:
-  - text: "Do you have any preference of food type?"
-  - text: "What kind of food would you like?"
-
-  utter_ask_find_res_form_restaurant_area:
-  - text: "Do you have any preference of area?"
-  - text: "There are several restaurants matching your preferences. What part of town would you like it?"
-  
-  utter_ask_find_res_form_restaurant_pricerange:
-  - text: "Do you have any preference of pricerange?"
-  - text: "There are several restaurants matching your preferences. Do you have any preference of pricerange?"
-  - text: "There are several restaurants matching your preferences. What part of town would you like it?"
-  
-  utter_offer_book:
-  - text: "Would you like to book a table at {restaurant_name}?"
-
-  utter_ask_book_res_form_restaurant_name:
-  - text: "Do you have any restaurant in mind?"
-
-  utter_ask_book_res_form_restaurant_bookpeople:
-  - text: "Do you need a table for how many people?"
-
-  utter_ask_book_res_form_restaurant_bookday:
-  - text: "For when do you need your reservation?"
-  
-  utter_ask_book_res_form_restaurant_booktime:
-  - text: "What time do you need your reservation?"
-
-  utter_booking_completed:
-  - text: "Booked a table at {restaurant_name} for {restaurant_bookpeople} on {restaurant_bookday} at {restaurant_booktime}"
-
-  utter_ask_4_more:
-  - text: "Do you need anything else?"
-
-  utter_goodbye:
-  - text: "Bye"
-  - text: "Goodbye"
-  - text: "You're welcome. Goodbye"
-  - text: "Thank you for using our service. Goodbye!"
-
-actions:
-- action_find_restaurants
-- action_show_options
-
-session_config:
-  session_expiration_time: 60
-  carry_over_slots_to_new_session: true

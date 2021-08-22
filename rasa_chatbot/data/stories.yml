@@ -6,7 +6,7 @@ stories:
   steps:
   - intent: greet
   - action: utter_greet
-  - action: utter_offer_help
+  - action: 
   - intent: find_res
   - action: find_res_form
   - active_loop: find_res_form
@@ -16,4 +16,233 @@ stories:
   - action: utter_ask_4_more
   - intent: deny
   - action: utter_goodbye
+  - action: action_reset_all_slots
   
+- story: continue conv affirm 
+  steps:
+  - action: utter_ask_4_more
+  - intent: affirm
+  - action: utter_offer_help
+  
+- story: find and book res
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - action: utter_offer_help
+  - intent: find_res
+  - action: find_res_form
+  - active_loop: find_res_form
+  - slot_was_set:
+    - requested_slot: restaurant_food
+  - slot_was_set:
+    - restaurant_food: chinese
+  - slot_was_set:
+    - requested_slot: restaurant_area
+  - slot_was_set:
+    - restaurant_area: centre
+  - slot_was_set:
+    - requested_slot: restaurant_pricerange
+  - slot_was_set:
+    - restaurant_pricerange: expensive
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: action_find_restaurants
+  - slot_was_set:
+    - restaurant_list:
+      - address: 17 Hills Road City Centre
+        area: centre
+        food: chinese
+        id: '19222'
+        introduction: sesame restaurant and bar offers a wide variety of traditional chinese cuisine for lunch or dinner with wifi access and a television screen in the basement
+        location:
+        - 52.197154
+        - 0.129511
+        name: sesame restaurant and bar
+        phone: '01223358899'
+        postcode: cb21nw
+        pricerange: expensive
+        type: restaurant
+      - address: Napier Street City Centre
+        area: centre
+        food: chinese
+        id: '19174'
+        introduction: tang chinese is a buffet restaurant and bar serving a variety of dishes for lunch and dinner there is also a takeaway menu available
+        location:
+        - 52.207702
+        - 0.133982
+        name: tang chinese
+        phone: '01223357187'
+        postcode: cb11hr
+        pricerange: expensive
+        type: restaurant
+      - address: 21 Burleigh Street City Centre
+        area: centre
+        food: chinese
+        id: '19172'
+        location:
+        - 52.206111
+        - 0.132969
+        name: hk fusion
+        phone: '01223355909'
+        postcode: cb11dg
+        pricerange: expensive
+        type: restaurant
+      - address: 12 St. Johns Street City Centre
+        area: centre
+        food: chinese
+        id: '19228'
+        introduction: ugly duckling serves a variety of chinese dishes to eat in or take away they also offer 10 percent discount on takeaway orders
+        location:
+        - 52.208055
+        - 0.118397
+        name: ugly duckling
+        postcode: cb21tw
+        pricerange: expensive
+        type: restaurant
+  - action: action_show_options
+  - intent: affirm
+    entities:
+    - restaurant_name: ugly duckling
+  - slot_was_set:
+    - restaurant_name: ugly duckling
+  - action: utter_offer_book
+  - intent: affirm
+  - action: action_reset_find_res_slots
+  - action: book_res_form
+  - active_loop: book_res_form
+  - slot_was_set:
+    - restaurant_name: ugly duckling
+  - slot_was_set:
+    - requested_slot: restaurant_bookpeople
+  - slot_was_set:
+    - restaurant_bookpeople: '2'
+  - slot_was_set:
+    - requested_slot: restaurant_bookday
+  - slot_was_set:
+    - restaurant_bookday: sunday
+  - slot_was_set:
+    - restaurant_booktime: 14:00
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: utter_booking_completed
+  - action: action_reset_book_res_slots
+  - action: utter_ask_4_more
+  - intent: deny
+  - action: utter_goodbye
+  - action: action_reset_all_slots
+
+- story: find and dont book res
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - action: utter_offer_help
+  - intent: find_res
+    entities:
+    - restaurant_pricerange: cheap
+    - restaurant_food: chinese
+  - slot_was_set:
+    - restaurant_food: chinese
+  - slot_was_set:
+    - restaurant_pricerange: cheap
+  - action: find_res_form
+  - active_loop: find_res_form
+  - slot_was_set:
+    - restaurant_food: chinese
+  - slot_was_set:
+    - restaurant_pricerange: cheap
+  - slot_was_set:
+    - requested_slot: restaurant_area
+  - slot_was_set:
+    - restaurant_area: centre
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: action_find_restaurants
+  - slot_was_set:
+    - restaurant_list:
+      - address: 88 Mill Road City Centre
+        area: centre
+        food: chinese
+        id: '19185'
+        introduction: rice house serve a variety of popular chinese dishes at their restaurant
+        location:
+        - 52.199332
+        - 0.138395
+        name: rice house
+        phone: '01223367755'
+        postcode: cb12bd
+        pricerange: cheap
+        type: restaurant
+      - address: Regent Street City Centre
+        area: centre
+        food: chinese
+        id: '19212'
+        introduction: charlie chan serves a variety of popular chinese dishes at their restaurant
+        location:
+        - 52.201743
+        - 0.124843
+        name: charlie chan
+        phone: '01223361763'
+        postcode: cb21db
+        pricerange: cheap
+        type: restaurant
+      - address: 12 Lensfield Road City Centre
+        area: centre
+        food: chinese
+        id: '19219'
+        location:
+        - 52.198696
+        - 0.12578
+        name: golden house
+        phone: '01842753771'
+        postcode: cb21eg
+        pricerange: cheap
+        type: restaurant
+  - action: action_show_options
+  - intent: affirm
+    entities:
+    - restaurant_name: rice house
+  - slot_was_set:
+    - restaurant_name: rice house
+  - action: utter_offer_book
+  - intent: deny
+  - action: utter_goodbye
+  - action: action_reset_all_slots
+
+- story: book res only
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - action: utter_offer_help
+  - intent: book_res
+    entities:
+    - restaurant_name: la margherita
+  - slot_was_set:
+    - restaurant_name: la margherita
+  - action: book_res_form
+  - active_loop: book_res_form
+  - slot_was_set:
+    - restaurant_name: la margherita
+  - slot_was_set:
+    - requested_slot: restaurant_bookpeople
+  - slot_was_set:
+    - restaurant_bookpeople: '5'
+  - slot_was_set:
+    - requested_slot: restaurant_bookday
+  - slot_was_set:
+    - restaurant_bookday: thursday
+  - slot_was_set:
+    - requested_slot: restaurant_booktime
+  - slot_was_set:
+    - restaurant_booktime: 18:00
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: utter_booking_completed
+  - action: action_reset_book_res_slots
+  - action: utter_ask_4_more
+  - intent: deny
+  - action: utter_goodbye
+  - action: action_reset_all_slots
